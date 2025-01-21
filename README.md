@@ -1,7 +1,9 @@
 <h1 align = 'center'> Optimal and Fast Algorithm for Wavelength Selection for Spectral Unmixing </h1>
+<!--
 <p align="center">
  <img src="/README_images/collage_v2.png" width="600" height="400">
 </p>
+--!>
 
 ## Summary: 
 We present a novel method for determining the optimal wavelengths to perform spectral unmixing in photoacoustic experiments.
