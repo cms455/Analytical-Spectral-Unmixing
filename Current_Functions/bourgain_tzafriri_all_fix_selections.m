@@ -1,4 +1,4 @@
-function [conditioned_indices, min_inv_indices, submatrix_cond, submatrix_inv, min_cond_val, min_inv_val] = bourgain_tzafriri_k_cols_n_iters_EMD(A_reg, A,k,num_iter)
+function [conditioned_indices, min_inv_indices, submatrix_cond, submatrix_inv, min_cond_val, min_inv_val] = bourgain_tzafriri_all_fix_selections(A_reg, A,k,num_iter)
     [num_rows, num_cols] = size(A);
     submatrix = [];
     ub = floor(log2(num_cols));
@@ -28,32 +28,34 @@ end
 
 function selected_indices = cond_reduce(A,s,num_cols)
 selected_indices = [];
-while length(selected_indices) ~= s
+empty_count = 0;
+s_original = s;
+while length(selected_indices) ~= s_original
+if(empty_count > 2)
+    s=s+1;
+    empty_count = 0;
+    %disp(s)
+end
 random_indices = randperm(num_cols, s);
 A_sigma = A(:, random_indices);
 G = A_sigma' * A_sigma - eye(s);
 alpha = s/4;
 F = search_for_F(G,alpha,s);
 f = diag(F);
-selected_indices = random_indices(f<=(3/s));
+selected_indices = random_indices(f<=(6/s));
+if length(selected_indices) < s_original
+    empty_count = empty_count + 1;
+end
 end
 
 end
 
 function F = search_for_F(G,alpha,s)
 
-T = floor(alpha^3+1);
+T = floor(alpha^2+1);
 J = @(F)[-alpha*F G; G -alpha*F];
 J_eig = @(f)eigs([-alpha*diag(f) G; G -alpha*diag(f)],1,'largestreal');
 f = entropic_mirror_descent(J,s,T,alpha);
 F = diag(f);
-%{
-Aeq = ones(1, s); % Sum(f) = 1
-beq = 1;
-f0 = (1 / s) * ones(s, 1);
-options = optimoptions('fmincon', 'Algorithm', 'interior-point','TolFun',1e-6,'TolX',1e-8, 'display','none');
-F_opt = fmincon(J_eig, f0, [], [], Aeq, beq, [], [], [], options);
 
-F = diag(F_opt);
-%}
 end

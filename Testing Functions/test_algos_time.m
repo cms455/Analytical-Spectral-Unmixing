@@ -12,16 +12,19 @@ time_holder=zeros(1,num_iters);
 cols  = linspace(2,max_cols,num_iters);
 for k= 1:num_iters
 k_col = round(cols(k));
-A = randn(10,1000);
+A = randn(10,k_col);
 A_norm = normalize_columns(A);
 tic;
-[l_submatrix,l_indices] = bourgain_tzafriri_k_cols_n_iters_EMD(A,A_norm, 2,k*100);
+bourgain_tzafriri_k_cols_n_iters_EMD(A,A_norm, 2, 500);
+%[l_submatrix,l_indices] = luke_algorithm(A',2);
 time = toc;
 time_holder(k) = time;
 end
 
 
 figure;
-plot(linspace(2,max_cols,num_iters),time_holder);
-xlabel('Number of Iterations');
-ylabel('TIme')
+title('Time for Greedy Algorithm')
+plot(linspace(2,max_cols,num_iters),time_holder, 'LineWidth',2);
+xlabel('Number of Columns');
+ylabel('Time(s)')
+set(gca,'FontSize',14);

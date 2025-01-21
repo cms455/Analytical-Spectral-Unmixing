@@ -8,7 +8,7 @@ num_cols = size(A,2);
 Nt = 4;
 max_iter = 100;
 
-k_items = 2pinv;
+k_items = 2;
 x_idx = 1:length(A);
 combinations = nchoosek(x_idx,k_items);
 

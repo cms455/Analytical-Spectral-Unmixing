@@ -7,9 +7,9 @@ A_norm = normalize_columns(A);
 
 % Parameters
 max_runs = 2000;
-num_iters = 100;
-num_inner_iters = 5;
-pick_cols = 2;
+num_iters = 10;
+num_inner_iters = 4;
+pick_cols =2 ;
 start_runs = 30;
 
 % Initialize holders
@@ -17,8 +17,8 @@ time_holder = zeros(num_iters, num_inner_iters);
 inv_val_holder = zeros(num_iters, num_inner_iters);
 runs_list = linspace(start_runs, max_runs, num_iters);
 
- true_min_inv = 0.001137095318943;
-
+% true_min_inv = 9.2557e-4;
+true_min_inv = 0.001137095318943;
 % Initialize waitbar
 total_steps = num_iters * num_inner_iters;
 step = 0;
@@ -33,7 +33,8 @@ for k = 1:num_iters
         
         % Timer
         tic;
-        [~, ~, ~, ~, ~, min_inv_val] = bourgain_tzafriri_k_cols_n_iters_EMD(A, A_norm, pick_cols, runs); % Function call
+        %[~, ~, ~, ~, ~, min_inv_val] = bourgain_tzafriri_k_cols_n_iters_EMD(A, A_norm, pick_cols, runs); % Function call
+        [~, ~, ~, ~, ~, min_inv_val] = bourgain_tzafriri_all_fix_selections(A, A_norm, pick_cols, runs); % Function call
         time = toc;
         
         % Store values
@@ -65,33 +66,39 @@ inv_val_std = std(inv_val_holder, 0, 2);
 
 % Plot time
 figure;
-errorbar(runs_list, time_mean, time_std, '-o');
+errorbar(runs_list, time_mean, time_std, '-o', 'LineWidth',2);
 xlabel('Number of Iterations');
 ylabel('Time (s)');
-title('Mean and Standard Deviation of Time');
+title('Time for Modified BT');
 grid on;
+set(gca,'FontSize',14);
 
-% Plot minimum inverse
-figure;
-errorbar(runs_list, inv_val_mean, inv_val_std, '-o');
-yline(luke_min_inv, 'LineStyle',  '-','Color', 'r','Label','Luke Min Inverse');
-yline(true_min_inv,'LineStyle',  '-','Color', 'g','Label','Luke Min Inverse')
-xlabel('Number of Iterations');
-ylabel('Norm of Inverse');
-title('Mean and Standard Deviation of Condition Number');
-grid on;
 
 % Plot minimum inverse number with log-log scale
+runs_list(runs_list < 0) = 0;
 figure;
-errorbar(runs_list, inv_val_mean, inv_val_std, '-o');
+ax = axes;
+plot(1:10,inv_val_mean);
+ylim([0,0.00124]);
+ax.YScale = 'log';
+drawnow;
+ax.YLim  
+
+
+
+figure;
+ax = axes;
+errorbar(1:num_iters, inv_val_mean, inv_val_std, '-o', 'LineWidth',2);
 hold on;
-yline(luke_min_inv, 'LineStyle', '-', 'Color', 'r', 'Label', 'Luke Min Inverse');
-yline(true_min_inv, 'LineStyle', '-', 'Color', 'g', 'Label', 'True Min Inverse');
-set(gca, 'YScale', 'log'); % Set log-log scale
-xlabel('Number of Iterations (log scale)');
-ylabel('Norm of Inverse (log scale)');
-%ylim([true_min_inv -(1e-6),10e-1])
-title('Mean and Standard Deviation of Minimum Inverse (Log-Log)');
-grid on;
-legend('Mean ± STD', 'Luke Min Inverse', 'True Min Inverse');
+%yline(luke_min_inv,  'LineWidth',2,'LineStyle', '-', 'Color', 'r', 'Label', 'Greedy Algorithm');
+%yline(true_min_inv, 'LineWidth',2,'LineStyle', '-', 'Color', 'g', 'Label', 'Optimal Norm');
+set(gca, 'FontSize',14);
+set(gca, 'YScale', 'log');
+  % Customize as per your data
+ax.YScale = 'log';
+ylim([0, max(inv_val_mean) * 1.1]);
+xlabel('Number of Iterations');
+ylabel('Norm of Inverse');
+title('Mean and Standard Deviation of Minimum Inverse ');
+%legend('Mean of Mod-BT', 'Greedy Algo', 'Optimal Norm');
 hold off;
