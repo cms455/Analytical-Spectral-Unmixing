@@ -30,6 +30,7 @@ function selected_indices = cond_reduce(A,s,num_cols)
 selected_indices = [];
 empty_count = 0;
 s_original = s;
+
 while length(selected_indices) ~= s_original
 if(empty_count > 2)
     s=s+1;

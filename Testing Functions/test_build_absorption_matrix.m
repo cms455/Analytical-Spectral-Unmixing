@@ -1,15 +1,21 @@
-% Generate wavelength range
-min_wavelength = 400; % Example value
-max_wavelength = 700; % Example value
-num_species = 2;
-num_wavelengths = 100;
-wavelengths = linspace(min_wavelength, max_wavelength, num_wavelengths);
+min_w = 600;
+max_w = 1000;
+species_bool = [1,1,1,0];
+num_points = 40;
+wavelengths = linspace(min_w,max_w, num_points);
 
-% Generate the spectrum matrix A
-A = generate_spectrum_curve(num_wavelengths, num_species, min_wavelength, max_wavelength,7);
+A = build_absorption_matrix(min_w, max_w, species_bool, num_points);
+figure;
+hold on;
+for i =  1:size(A,1)
+    plot(A(i,:));
+end
+legend;
+
 A_norm = normalize_columns(A);
-k_items = 6;
-num_iters = 5000;
+k_items = 5;
+num_iters = 50000;
+num_species = sum(species_bool);
 
 % Storage for results
 bt_search_val_holder = zeros(1, k_items - 1);
@@ -93,21 +99,4 @@ title('Comparison of Runtime for BT and Luke Algorithms');
 legend('Location', 'Best');
 
 
-
-% Save all necessary data for recreating the figures in a single file
-save_folder = '/Users/calvinsmith/Bouma_lab/Analytical_Spectral_Unmixing/ASU_plot_data';
-
-if ~exist(save_folder, 'dir')
-    mkdir(save_folder);
-end
-idx = randi(9999);
-file_name = ['BT_Luke_comparison_data_', num2str(idx),'.mat'];
-% Save all data into a single .mat file
-save(fullfile(save_folder, file_name), ...
-    'wavelengths', 'A', 'A_norm', ...                 % Wavelength and spectrum matrix
-    'num_species', 'k_items', ...                    % Metadata
-    'bt_search_val_holder', 'luke_search_val_holder', ... % Algorithm results
-    'bt_times', 'luke_times');                       % Runtime data
-
-disp('All necessary data for recreating the figures has been saved into comparison_data.mat.');
 

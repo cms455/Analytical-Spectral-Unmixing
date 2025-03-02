@@ -1,7 +1,7 @@
 % Generate wavelength range
 min_wavelength = 400; % Example value
 max_wavelength = 700; % Example value
-num_species = 3;
+num_species = 2;
 num_wavelengths = 50;
 wavelengths = linspace(min_wavelength, max_wavelength, num_wavelengths);
 

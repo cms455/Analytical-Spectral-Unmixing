@@ -1,21 +1,20 @@
-% Generate wavelength range
-min_wavelength = 400; % Example value
-max_wavelength = 700; % Example value
-num_species = 4;
-num_wavelengths = 20;
-wavelengths = linspace(min_wavelength, max_wavelength, num_wavelengths);
+min_w = 680;
+max_w = 800;
+species_bool = [1, 1, 1,1,1];
+num_points = 20;
+wavelengths = linspace(min_w, max_w, num_points);
+num_species = sum(species_bool);
+A = build_absorption_matrix(min_w, max_w, species_bool, num_points);
 
-% Generate the spectrum matrix A
-A = generate_spectrum_curve(num_wavelengths, num_species, min_wavelength, max_wavelength, 3);
-A_norm = normalize_columns(A);
-k_items = 8;
-num_iters = 10000;
 figure;
 hold on;
 for i = 1:num_species
     plot(A(i,:),'LineWidth',2);
 end
 legend;
+A_norm = normalize_columns(A);
+k_items = 6;
+num_iters = 10000;
 
 num_repeat = 2; % Number of repetitions for each iteration
 
@@ -78,7 +77,7 @@ errorbar(num_species:k_items, luke_mean_vals(num_species-1:end), luke_std_vals(n
 hold off;
 xlabel('k (Wavelength Selections)', 'FontSize', 14);
 ylabel('Minimum Inverse Frobenius Norm', 'FontSize', 14);
-%title('Comparison of Minimum Inverse Values for BT and Luke Algorithms', 'FontSize', 14);
+title('Comparison of Minimum Inverse Values for BT and Luke Algorithms', 'FontSize', 14);
 legend('Location', 'Best', 'FontSize', 12);
 grid on;
 
@@ -93,28 +92,3 @@ ylabel('Runtime (seconds)', 'FontSize', 14);
 title('Comparison of Runtime for BT and Luke Algorithms', 'FontSize', 14);
 legend('Location', 'Best', 'FontSize', 12);
 grid on;
-
-
-% Save all necessary data for recreating the figures in a single file
-save_folder = '/Users/calvinsmith/Bouma_lab/Analytical_Spectral_Unmixing/ASU_plot_data';
-
-% Create directory if it doesn't exist
-if ~exist(save_folder, 'dir')
-    mkdir(save_folder);
-end
-
-% Generate a random file identifier to avoid overwriting
-idx = randi(9999);
-file_name = ['BT_Luke_comparison_data_w_error', num2str(idx), '.mat'];
-
-% Save all relevant variables into a .mat file
-save(fullfile(save_folder, file_name), ...
-    'min_wavelength', 'max_wavelength', 'num_species', 'num_wavelengths', 'wavelengths', ... % Wavelength-related data
-    'A', 'A_norm', ...                                  % Spectrum matrix and normalized spectrum
-    'k_items', 'num_iters', 'num_repeat', ...           % Algorithm parameters
-    'bt_search_val_holder', 'bt_times', ...             % Bourgain-Tzafriri results
-    'luke_search_val_holder', 'luke_times', ...         % Luke's algorithm results
-    'bt_mean_vals', 'bt_std_vals', 'luke_mean_vals', 'luke_std_vals', ... % Results for minimum inverse values
-    'bt_mean_times', 'bt_std_times', 'luke_mean_times', 'luke_std_times'); % Results for runtime
-
-disp(['All necessary data for recreating the figures has been saved into ', file_name]);

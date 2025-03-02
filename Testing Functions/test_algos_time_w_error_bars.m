@@ -1,5 +1,5 @@
 % Load and preprocess the matrix A
-load_A = readmatrix('/Users/calvinsmith/Bouma_lab/Analytical_Spectral_Unmixing/Spectrum_Data/HbOHbR.csv');
+load_A = readmatrix('/Users/calvinsmith/Bouma_lab/Analytical_Spectral_Unmixing/Spectrum_Data/HbOHbR_spectrum.csv');
 A = load_A(3:end, 2:end)';
 shift = 225;
 A = A(:, shift:end);
