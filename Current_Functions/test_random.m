@@ -1,4 +1,4 @@
-load_A = readmatrix('/Users/calvinsmith/Bouma_lab/Analytical_Spectral_Unmixing/Spectrum_Data/HbOHbR.csv');
+load_A = readmatrix('/Users/calvinsmith/Bouma_lab/Analytical_Spectral_Unmixing/Spectrum_Data/HbOHbR_Spectrum.csv');
 A = load_A(3:end, 2:end);
 A = A';
 shift = 225;
@@ -6,7 +6,7 @@ A = A(:, shift:end);
 num_rows = size(A,1);
 num_cols = size(A,2);
 
-k = 2;
+k = 4;
 num_iters = 1000;
 holder_indices = zeros(num_iters,k);
 holder_min_inv = zeros(1,num_iters);
