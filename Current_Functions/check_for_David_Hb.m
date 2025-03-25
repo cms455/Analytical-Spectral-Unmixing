@@ -1,7 +1,7 @@
 min_w = 680;
-max_w = 1030;
+max_w =970;
 species_bool = [1, 1, 0, 0, 0];
-num_points = 20;
+num_points = 150;
 wavelengths = linspace(min_w, max_w, num_points);
 num_species = sum(species_bool);
 A = build_absorption_matrix(min_w, max_w, species_bool, num_points);
@@ -13,8 +13,8 @@ for i = 1:num_species
 end
 legend;
 A_norm = normalize_columns(A);
-k_items = 4;
-num_iters = 10000;
+k_items = 2;
+num_iters = 100000;
 
 num_repeat = 2; % Number of repetitions for each iteration
 
@@ -141,3 +141,12 @@ for k = 2:k_items
 end
 
 hold off;
+
+% Define the save path
+save_path = '/Users/calvinsmith/Bouma_lab/Analytical_Spectral_Unmixing/ASU_plot_data/Hb_data.mat';
+
+% Save the relevant variables
+save(save_path, 'wavelengths', 'A', 'bt_mean_vals', 'bt_std_vals', 'luke_mean_vals', 'luke_std_vals', ...
+    'bt_mean_times', 'bt_std_times', 'luke_mean_times', 'luke_std_times', 'bt_selected_wavelengths', 'luke_selected_wavelengths', 'k_items');
+
+disp(['Data saved to ' save_path]);

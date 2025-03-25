@@ -13,7 +13,7 @@ for i = 1:num_species
 end
 legend;
 A_norm = normalize_columns(A);
-k_items = 6;
+k_items = 8;
 num_iters = 10000;
 
 num_repeat = 2; % Number of repetitions for each iteration

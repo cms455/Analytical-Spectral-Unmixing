@@ -1,11 +1,21 @@
-min_w = 680;
-max_w = 800;
 species_bool = [1, 1, 1, 1, 1]; % Five species
-num_points = 120;
-wavelengths = linspace(min_w, max_w, num_points);
+%num_points = 150;
+%wavelengths = linspace(min_w, max_w, num_points);
 num_species = sum(species_bool);
-A = build_absorption_matrix(min_w, max_w, species_bool, num_points);
+load_A = load('/Users/calvinsmith/Bouma_lab/Analytical_Spectral_Unmixing/Spectrum_Data/combined_spectra_v2.mat');
+load_A = load_A.combined_spectra;
+%load_A = load_A.load_A_select;
+wavelengths = load_A(:,1);
+A = load_A(:,2:end)';
 
+df = 1;
+wavelengths = wavelengths(1:df:end);
+A = A(:,1:df:end);
+
+%A = A(1:4,:);
+
+min_w = wavenumbers(1,1);
+max_w = wavenumbers(end,1);
 % Plot spectral absorption curves
 figure;
 hold on;
@@ -19,7 +29,7 @@ grid on;
 
 A_norm = normalize_columns(A);
 k_items = 5;
-num_iters = 10000; % Number of iterations for BT Algorithm
+num_iters = 30000; % Number of iterations for BT Algorithm
 
 % Run Luke's Algorithm on the full curve
 [l_submatrix, luke_selected_indices] = luke_algorithm(A', k_items);
@@ -53,3 +63,22 @@ title('Comparison of Minimum Inverse Values for BT and Luke Algorithms');
 legend('Location', 'Best');
 grid on;
 hold off;
+
+% Save all necessary data
+save_folder = '/Users/calvinsmith/Bouma_lab/Analytical_Spectral_Unmixing/ASU_plot_data';
+
+if ~exist(save_folder, 'dir')
+    mkdir(save_folder);
+end
+
+idx = randi(9999); % Unique identifier for each run
+file_name = ['compare_data_', num2str(idx), '.mat'];
+
+% Save data for figure recreation
+save(fullfile(save_folder, file_name), ...
+    'species_counts', 'k_items', 'wavelengths', ...
+    'bt_mean_vals_holder', 'bt_std_vals_holder', ...
+    'luke_mean_vals_holder', 'A', ...
+    'bt_selected_indices', 'luke_selected_indices'); 
+
+disp(['All necessary data for recreating the figures has been saved as: ', file_name]);

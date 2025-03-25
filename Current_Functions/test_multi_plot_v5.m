@@ -1,37 +1,42 @@
-min_w = 680;
-max_w = 800;
-species_bool = [1, 1, 1,1,1];
-num_points = 60;
-wavelengths = linspace(min_w, max_w, num_points);
-num_species = sum(species_bool);
-full_A = build_absorption_matrix(min_w, max_w, species_bool, num_points);
+load_A = load('/Users/calvinsmith/Bouma_lab/Analytical_Spectral_Unmixing/Spectrum_Data/combined_spectra.mat');
+load_A = load_A.combined_spectra;
+wavenumbers = load_A(:,1);
+full_A = load_A(:,2:end)';
+min_wavelength = wavenumbers(1,1);
+max_wavelength  = wavenumbers(end,1);
+num_wavelengths = length(wavenumbers);
+
+wavelengths = linspace(min_wavelength, max_wavelength, num_wavelengths);
 species_counts = [2,3, 4,5];
+num_repeat = 1; % Number of repetitions for each iteration
+% Generate the spectrum matrix A
+colors = lines(length(species_counts));
+k_items = 10;
+num_iters = 2000;
 
-k_items = 8;
-
-num_iters = 100000;
 figure(1);
-figure(2);
+
 hold on;
 for i = 1:min(species_counts)-1
-    plot(full_A(i,:),'LineWidth',2);
-    A = full_A(i,:);
+    plot(wavelengths,full_A(i,:),'LineWidth',2);
 end
-
 
 bt_mean_vals_holder = zeros(length(species_counts),k_items);
 luke_mean_vals_holder = zeros(length(species_counts),k_items);
 
 bt_std_vals_holder = zeros(length(species_counts),k_items);
 luke_std_vals_holder = zeros(length(species_counts),k_items);
+count = 1;
+
 
 for m = 1:length(species_counts)
 s = species_counts(m);
-curve = full_A(m+1,:);
 figure(2);
 hold on;
-plot(curve, 'LineWidth',2);
-A = cat(1,A,curve);
+
+A = full_A(1:count,:);
+plot(A(count,:), 'LineWidth',2);
+count = count + 1;
 A_norm = normalize_columns(A);
 
 num_elems = k_items -s + 1;
