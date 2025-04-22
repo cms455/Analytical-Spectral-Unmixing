@@ -33,7 +33,7 @@ s_original = s;
 
 while length(selected_indices) ~= s_original
 if(empty_count > 2)
-    s=s+1;
+    s=s+4;
     empty_count = 0;
     %disp(s)
 end

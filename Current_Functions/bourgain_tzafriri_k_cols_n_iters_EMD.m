@@ -1,5 +1,6 @@
-function [conditioned_indices, min_inv_indices, submatrix_cond, submatrix_inv, min_cond_val, min_inv_val] = bourgain_tzafriri_k_cols_n_iters_EMD(A_reg, A,k,num_iter)
+function [conditioned_indices, min_inv_indices, submatrix_cond, submatrix_inv, min_cond_val, min_inv_val] = bourgain_tzafriri_k_cols_n_iters_EMD(A,k,num_iter)
     [num_rows, num_cols] = size(A);
+    A_reg = normalize_columns(A);
     submatrix = [];
     ub = floor(log2(num_cols));
     selected_indices = [];
@@ -35,7 +36,7 @@ G = A_sigma' * A_sigma - eye(s);
 alpha = s/4;
 F = search_for_F(G,alpha,s);
 f = diag(F);
-selected_indices = random_indices(f<=(3/s));
+selected_indices = random_indices(f<=(2/s));
 end
 
 end

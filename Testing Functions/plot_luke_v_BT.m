@@ -10,7 +10,7 @@ for i = 1:N
     A = randn(10,1000);
     A_norm = normalize_columns(A);
     tic;
-    [selected_indices, ~] = bourgain_tzafriri_v2(A_norm); % Run the Bourgain-Tzafriri algorithm
+    [selected_indices, ~] = bourgain_tzafriri(A_norm); % Run the Bourgain-Tzafriri algorithm
     times_BT(i) = toc;
     
     % Calculate condition number for normalized submatrix

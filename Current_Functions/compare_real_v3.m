@@ -8,7 +8,7 @@ num_species = sum(species_bool);
 A = build_absorption_matrix(min_w, max_w, species_bool, num_points);
 species_counts = [2, 3, 4, 5]; % Incremental species counts
 k_items = 8;
-num_iters = 100000;
+num_iters = 1000;
 num_repeat = 2; % Number of repetitions for each iteration
 colors = lines(length(species_counts));
 

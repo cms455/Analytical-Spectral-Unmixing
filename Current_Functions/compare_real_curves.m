@@ -9,7 +9,7 @@ species_counts = [2,3, 4,5];
 
 k_items = 8;
 
-num_iters = 100000;
+num_iters = 10000;
 figure(1);
 figure(2);
 hold on;
