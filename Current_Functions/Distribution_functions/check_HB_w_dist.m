@@ -1,7 +1,7 @@
 min_w = 680;
-max_w = 1000;
+max_w = 970;
 species_bool = [1, 1, 0, 0, 0];
-num_points = 400;
+num_points = 290;
 wavelengths = linspace(min_w, max_w, num_points);
 num_species = sum(species_bool);
 A = build_absorption_matrix(min_w, max_w, species_bool, num_points);
@@ -13,7 +13,7 @@ for i = 1:num_species
 end
 legend;
 A_norm = normalize_columns(A);
-k_items = 6;
+k_items = 10;
 num_iters = 1000;
 delta = 5;
 num_neigh_reps = 3;
@@ -126,7 +126,7 @@ legend('Species 1', 'Species 2', 'Location', 'Best');
 grid on;
 
 colors = lines(3);
-for k = 2:k_items
+for k = 2:5
     for r = 1:num_repeat
         for x = rand_selected_wavelengths{r, k - 1}
             xline(x, '--', 'Color', colors(1,:), 'LineWidth', 1.5);
@@ -142,6 +142,6 @@ end
 hold off;
 
 % Save results
-save_path = '/Users/calvinsmith/Bouma_lab/Analytical_Spectral_Unmixing/ASU_plot_data/Hb_data.mat';
-save(save_path, 'wavelengths', 'A', 'rand_mean_vals', 'rand_std_vals', 'btdist_mean_vals', 'btdist_std_vals', 'luke_mean_vals', 'luke_std_vals', 'rand_mean_times', 'rand_std_times', 'btdist_mean_times', 'btdist_std_times', 'luke_mean_times', 'luke_std_times', 'rand_selected_wavelengths', 'btdist_selected_wavelengths', 'luke_selected_wavelengths', 'k_items');
-disp(['Data saved to ' save_path]);
+%save_path = '/Users/calvinsmith/Bouma_lab/Analytical_Spectral_Unmixing/ASU_plot_data/Hb_data.mat';
+%save(save_path, 'wavelengths', 'A', 'rand_mean_vals', 'rand_std_vals', 'btdist_mean_vals', 'btdist_std_vals', 'luke_mean_vals', 'luke_std_vals', 'rand_mean_times', 'rand_std_times', 'btdist_mean_times', 'btdist_std_times', 'luke_mean_times', 'luke_std_times', 'rand_selected_wavelengths', 'btdist_selected_wavelengths', 'luke_selected_wavelengths', 'k_items');
+%disp(['Data saved to ' save_path]);

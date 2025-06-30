@@ -11,6 +11,7 @@ for i = 1:num_iters
  end
  submatrix = A(:,indices);
  norm_inv = norm(pinv(submatrix),'Fro');
+ %norm_inv = cond(submatrix);
  holder_min_inv(i) = norm_inv;
  holder_indices(i,:) = indices;
 end

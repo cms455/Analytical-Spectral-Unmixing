@@ -22,6 +22,8 @@ true_min_inv = 0.001137095318943;
 % Initialize waitbar
 total_steps = num_iters * num_inner_iters;
 step = 0;
+neigh_range = 2;
+num_neigh_iters = 100;
 h = waitbar(0, 'Processing iterations...');
 
 for k = 1:num_iters
@@ -34,7 +36,9 @@ for k = 1:num_iters
         % Timer
         tic;
         %[~, ~, ~, ~, ~, min_inv_val] = bourgain_tzafriri_k_cols_n_iters_EMD(A, A_norm, pick_cols, runs); % Function call
-        [~, ~, ~, ~, ~, min_inv_val] = bourgain_tzafriri_all_fix_selections(A, A_norm, pick_cols, runs); % Function call
+        %[best_combo, min_inv_val] = og_dist_v1(A, pick_cols, runs, neigh_range, num_neigh_iters);
+        [best_combo, min_inv_val] = random_search(A, pick_cols, runs);
+        
         time = toc;
         
         % Store values
@@ -88,7 +92,7 @@ ax.YLim
 
 figure;
 ax = axes;
-errorbar(1:num_iters, inv_val_mean, inv_val_std, '-o', 'LineWidth',2);
+errorbar(runs_list, inv_val_mean, inv_val_std, '-o', 'LineWidth',2);
 hold on;
 yline(luke_min_inv,  'LineWidth',2,'LineStyle', '-', 'Color', 'r', 'Label', 'Greedy Algorithm');
 yline(true_min_inv, 'LineWidth',2,'LineStyle', '-', 'Color', 'g', 'Label', 'Optimal Norm');
@@ -123,4 +127,3 @@ save(fullfile(save_folder, file_name), ...
     'time_mean', 'time_std', 'inv_val_mean', 'inv_val_std');
 
 disp('All necessary data for recreating the figures has been saved.');
-disp(idx);
