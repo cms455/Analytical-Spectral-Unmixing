@@ -10,7 +10,7 @@ max_runs = 1000;
 num_iters = 50;
 num_inner_iters = 10;
 pick_cols = 2;
-start_runs = 30;
+start_runs = 10;
 
 % Initialize holders
 time_holder = zeros(num_iters, num_inner_iters);
@@ -25,7 +25,7 @@ step = 0;
 h = waitbar(0, 'Processing iterations...');
 
 for k = 1:num_iters
-    runs = round(runs_list(k));
+        runs = round(runs_list(k));
     for j = 1:num_inner_iters
         % Timer
         tic;
@@ -62,7 +62,7 @@ inv_val_std = std(inv_val_holder, 0, 2);
 % Plot time
 figure;
 errorbar(runs_list, time_mean, time_std, '-o', 'LineWidth', 2);
-yline(l_time, 'LineWidth', 2, 'LineStyle', '-', 'Color', 'r', 'Label', 'Greedy Algorithm');
+yline(l_time, 'LineWidth', 2, 'LineStyle', '-', 'Color', 'r', 'Label', 'Luke Algorithm');
 xlabel('Number of Iterations');
 ylabel('Time (s)');
 grid on;

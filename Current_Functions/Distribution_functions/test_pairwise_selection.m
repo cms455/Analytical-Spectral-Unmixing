@@ -4,7 +4,7 @@ A = randn(100, 50);  % example matrix
 
 min_w = 680;
 max_w = 800;
-species_bool = [1, 1, 1, 0, 0];
+species_bool = [1, 1, 1, 1, 1];
 num_points = 120;
 
 k = 5;
@@ -27,3 +27,13 @@ time = toc;
 disp('NK');
 sprintf('%.8f', best_fitness)
 disp(toc);
+
+
+save_folder = '/Users/calvinsmith/Bouma_lab/Analytical_Spectral_Unmixing/ASU_plot_data';
+if ~exist(save_folder, 'dir')
+    mkdir(save_folder);
+end
+idx = randi(9999);
+file_name = ['two_wl_distribution_', num2str(idx), '.mat'];
+save(fullfile(save_folder, file_name), 'pair_map');
+disp(['Data saved: ', file_name]);

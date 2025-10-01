@@ -12,7 +12,7 @@
 min_wavelength = 400;
 max_wavelength = 700;
 num_species = 2;
-num_wavelengths = 50;
+num_wavelengths = 40;
 wavelengths = linspace(min_wavelength, max_wavelength, num_wavelengths);
 
 k_items = 5;  % Maximum number of wavelengths to select
@@ -92,7 +92,7 @@ for trial = 1:num_repeats
         %% NK Algorithm
         fprintf('  Running NK algorithm...\n');
         tic;
-        [~, nk_val] = nk_column_selector(A, k, 1000);
+        [~, nk_val] = nk_column_selector(A, k, 2000);
         runtimes.nk_algorithm(trial, k - 1) = toc;
         nk_norm = abs(nk_val);
         results.nk_algorithm(trial, k - 1) = nk_norm;
@@ -215,7 +215,7 @@ function create_comparison_plots(results, runtimes, errors, stats, k_items, num_
     ylabel('Mean Absolute Error', 'FontSize', 12);
     title('Mean Error by Algorithm', 'FontSize', 14);
     legend({'Random Search', 'Luke Algorithm', 'NK Algorithm'}, 'Location', 'best', 'FontSize', 10);
-    grid on;
+    %grid on;
     set(gca, 'FontSize', 11);
 end
 

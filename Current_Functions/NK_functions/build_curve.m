@@ -11,7 +11,6 @@ wavelengths = linspace(min_wavelength, max_wavelength, num_wavelengths);
 % Initialize the absorption curve
 absorption_curve = zeros(1, num_wavelengths);
 
-% Randomly generate Gaussian peaks
  % For reproducibility
 for i = 1:num_peaks
     % Randomly select peak center, height, and width

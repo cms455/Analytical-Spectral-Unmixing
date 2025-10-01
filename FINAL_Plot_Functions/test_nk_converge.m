@@ -3,7 +3,7 @@ load_A = readmatrix('/Users/calvinsmith/Bouma_lab/Analytical_Spectral_Unmixing/S
 A = load_A(3:end, 2:end)';
 shift = 225;
 A = A(:, shift:end);
-A_norm = normalize_columns(A);
+    %A_norm = normalize_columns(A);
 
 % Parameters
 max_runs = 1000;

@@ -67,7 +67,7 @@ for r = 1:num_repeats
         %% NK Algorithm
         disp('NK Algorithm')
         tic;
-        [~, nk_val] = nk_column_selector(A, k,1000);
+        [~, nk_val] = nk_column_selector(A, k,2000);
         nk_times(k - 1) = toc;
         nk_search_val_holder(k - 1) = abs(nk_val);
 
